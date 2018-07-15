@@ -1,0 +1,52 @@
+<!--/* header block */-->
+<head th:fragment="header">
+    <title>APM & Beats demo app</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+
+<!--/* menu block */-->
+<nav class="navbar navbar-expand-sm navbar-light bg-light" th:fragment="menu">
+    <div class="container">
+        <a class="navbar-brand" href="/index.html" th:href="@{/index}">
+            <img src="/static/logo.svg" width="30" height="30" alt="">
+        </a>
+        <a class="navbar-brand" href="/index.html" th:href="@{/index}">Elastic APM demo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="/">ホーム</a>
+                <a class="nav-item nav-link active" href="/question_form.html" th:href="@{/create}">質問を投稿</a>
+                <a class="nav-item nav-link active" href="/about.html" th:href="@{/about}">デモについて</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--/* message blog */-->
+<th:block th:fragment="messages" th:if="${#lists.isEmpty(messages)}">
+<th:block th:each="message, iterStat : ${messages}">
+
+<div style="position: fixed; top: 20px; left: 50%; margin-left: -175px; width: 350px; z-index: 9999;" class="alert alert-{{ message.tags }}">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button><span th:text="message"/>
+</div>
+</th:block>
+</th:block>
+
+<!--/* footer block */-->
+<th:block th:fragment="footer">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</th:block>

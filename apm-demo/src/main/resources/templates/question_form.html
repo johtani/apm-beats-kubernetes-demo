@@ -1,0 +1,20 @@
+<th:block layout:decorate="base">
+    <div class="container" layout:fragment="content">
+        <div th:replace="fragments :: messages"/>
+
+        <h4>質問を投稿する</h4>
+        <p>質問はリストに公開され、ユーザによる投票ができます。</p>
+
+        <form action="" th:action="@{/submit}" th:object="${questionForm}" method="post">
+            <div class="form-group">
+                <label class="control-label col-xs-2">質問</label>
+                <input type="text" th:field="*{title}" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2">投稿者</label>
+                <input type="text" th:field="*{author}" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">投稿</button>
+        </form>
+    </div>
+</th:block>

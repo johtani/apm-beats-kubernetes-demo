@@ -1,0 +1,27 @@
+version: "1"
+
+services:
+  app:
+    user: "1000"
+    image: johtani/apm-demo-app
+    volumes:
+      - ./app:/src/app
+
+  nginx:
+    image: johtani/apm-demo-nginx
+    ports:
+      - 8000:8000
+
+  mysql:
+    image: mysql:5.6
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DATABASE=apm_demo_app
+      - MYSQL_USER=apm
+      - MYSQL_PASSWORD=foobar
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - db-data:/var/lib/mysql/data
+
+volumes:
+  db-data:

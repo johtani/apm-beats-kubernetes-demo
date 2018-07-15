@@ -1,0 +1,26 @@
+<th:block layout:decorate="base">
+    <div class="container" layout:fragment="content">
+    <h4>質問</h4>
+    <p>ユーザにより登録された質問のリストです。Voteの数でソートされます。<a href="/create" th:href="@{/create}">質問を投稿</a>から新しい質問を登録できます。</p>
+
+    <th:block th:each="question, iterStat : ${questions}">
+    <div class="card" style="margin-bottom: 20px">
+        <div class="card-body">
+            <a name="question.id" th:name="${question.id}"/>
+            <h4 class="card-title">#<span th:text="${iterStat.count}"/> <span th:text="${question.title}"/></h4>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <span th:text="${question.numVotes}"/> 票。投稿者：<strong th:text="${question.author}">が<em th:text="${#dates.formatISO(question.pubDate)}"/>投稿。
+            </h6>
+            <th:block th:unless="${#lists.contains(votes, question.id)}">
+            <a id="vote-qid" th:id="'vote-'+${question.id}" onclick="return vote('/vote?question_id=1', 'vote-1')"
+               th:attr="onclick='\'return vote(' + @{/vote(question_id=${question.id})} + '), \'vote-' + ${question.id} + ');\''"
+               href="/vote" th:href="@{/vote(question_id=${question.id})}" class="btn btn-primary float-right" aria-label="Vote up">
+                <span class="fa fa-chevron-up" aria-hidden="true"></span> 投票</a>
+            </th:block>
+        </div>
+    </div>
+    </th:block>
+    <div class="alert alert-primary" role="alert" th:if="${#lists.isEmpty(questions)}">
+        まだ質問がありません。質問を<a href="/create" th:href="@{/create}">投稿しますか</a>?</div>
+    </div>
+</th:block>

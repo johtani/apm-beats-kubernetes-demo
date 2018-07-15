@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="fragments :: header"/>
+<body>
+<div th:replace="fragments :: menu"/>
+
+<script>
+    function vote(vote_url, button_id) {
+        $.get(vote_url)
+            .done(function(data) {
+                // Vote done, hide button
+                $('#' + button_id).hide();
+            })
+            .always(function(data) {
+                // Reload on failure
+                location.reload();
+            });
+        return false;
+    }
+</script>
+
+
+<div class="container">
+    <div th:replace="fragments :: messages"/>
+    <div layout:fragment="content" th:remove="tag">Contents is here!</div>
+</div>
+<div th:replace="fragments :: footer"/>
+</body>
+</html>
