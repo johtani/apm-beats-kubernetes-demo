@@ -1,17 +1,6 @@
-version: "1"
+version: "2.1"
 
 services:
-  app:
-    user: "1000"
-    image: johtani/apm-demo-app
-    volumes:
-      - ./app:/src/app
-
-  nginx:
-    image: johtani/apm-demo-nginx
-    ports:
-      - 8000:8000
-
   mysql:
     image: mysql:5.6
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -20,8 +9,42 @@ services:
       - MYSQL_USER=apm
       - MYSQL_PASSWORD=foobar
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     volumes:
       - db-data:/var/lib/mysql/data
+
+  app:
+    user: "1000"
+    image: johtani/apm-demo
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - ELASTIC_APM_SERVICE_NAME=apm_demo
+      - ELASTIC_APM_APPLICATION_PACKAGES=info.johtani
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=apm
+      - MYSQL_PASSWORD=foobar
+      - MYSQL_PORT=3306
+#    healthcheck:
+#      test: ["CMD", "curl" , "http://localhost:8080"]
+#      timeout: 20s
+#      retries: 30
+    volumes:
+      - ./:/tmp/
+
+  nginx:
+    image: johtani/apm-demo-nginx
+    depends_on:
+      - app
+#        condition: service_healthy
+    ports:
+      - 8000:8000
 
 volumes:
   db-data:
