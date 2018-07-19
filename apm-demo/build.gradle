@@ -11,7 +11,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.1')
+		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.19.2')
 	}
 }
 
@@ -48,6 +48,6 @@ ext {
 docker {
 	dependsOn build
 	name "${dockerImagePrefix}/${project.name}"
-	files bootJar.archivePath
-	buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+	files bootJar.archivePath, "apm-jar/elastic-apm-agent-${elasticApmJavaVersion}.jar"
+	buildArgs(['JAR_FILE': "${bootJar.archiveName}", 'APM_JAR_FILE': "elastic-apm-agent-${elasticApmJavaVersion}.jar"])
 }
