@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+#  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: app
+  clusterIP: None
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        co.elastic.metrics.jolokia/module: jmx
+        co.elastic.metrics.jolokia/period: 10s
+        co.elastic.metrics.jolokia/hosts: "${data.host}:8080"
+    spec:
+      containers:
+      - image: johtani/apm-demo:latest
+        imagePullPolicy: Always
+        name: app
+#        resources:
+#          limits:
+#            cpu: 200m
+        env:
+        - name: APM_SERVER_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_USER
+          value: apm
+        - name: ELASTIC_APM_SERVICE_NAME
+          value: apm_demo
+        - name: ELASTIC_APM_APPLICATION_PAGAGES
+          value: info.johtani
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: apm-demo
+              key: MYSQL_PASSWORD
+        ports:
+        - containerPort: 8080
+      hostAliases:
+      - ip: 127.0.0.1
+        hostnames:
+        - app

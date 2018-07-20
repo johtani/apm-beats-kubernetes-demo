@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+#  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 35.200.90.188
+  # Avoid NAT to get source IP:
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+    targetPort: 8000
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      annotations:
+        co.elastic.logs.nginx/module: nginx
+        co.elastic.logs.nginx/fileset.stdout: access
+        co.elastic.logs.nginx/fileset.stderr: error
+        co.elastic.metrics.nginx/module: nginx
+        co.elastic.metrics.nginx/period: 10s
+        co.elastic.metrics.nginx/hosts: "${data.host}:8000"
+    spec:
+      containers:
+      - image: johtani/apm-demo-nginx
+        imagePullPolicy: Always
+        name: nginx
+        resources:
+          limits:
+            cpu: 100m
+        ports:
+        - containerPort: 8000
+      hostAliases:
+      - ip: 127.0.0.1
+        hostnames:
+        - nginx
