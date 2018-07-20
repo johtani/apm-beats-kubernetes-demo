@@ -36,6 +36,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
 	compile("javax.xml.bind:jaxb-api:2.3.0")
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.jolokia:jolokia-core')
+	compile("co.elastic.apm:apm-agent-api:$elasticApmJavaVersion")
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 

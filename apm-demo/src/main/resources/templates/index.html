@@ -8,7 +8,7 @@
             <a name="question.id" th:name="${question.id}"/>
             <h4 class="card-title">#<span th:text="${iterStat.count}"/> <span th:text="${question.title}"/></h4>
             <h6 class="card-subtitle mb-2 text-muted">
-                <span th:text="${question.numVotes}"/> 票。投稿者：<strong th:text="${question.author}"/>が<em th:text="${#dates.formatISO(question.pubDate)}"/>投稿。
+                <span th:text="${question.numVotes}"/> 票。投稿者：<strong th:text="${question.author}"/>。投稿日時：<em th:text="${#dates.formatISO(question.pubDate)}"/>
             </h6>
             <th:block th:unless="${#lists.contains(votes, question.id)}">
             <a id="vote-qid" th:id="'vote-'+${question.id}" onclick="return vote('/vote?question_id=1', 'vote-1')"

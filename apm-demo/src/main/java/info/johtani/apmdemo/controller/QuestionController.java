@@ -10,15 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @SessionAttributes(value = "author")
@@ -36,7 +35,8 @@ public class QuestionController {
     public String index(HttpSession session, Model model) {
 
         //TODO get all questions
-        List<Question> questions = questionRepository.findAll();
+        //List<Question> questions = questionRepository.findAll();
+        List<Question> questions = questionRepository.findQuestionsSortByVotes();
         //TODO set questions to model
         List<QuestionVote> questionVotes = questionVoteRepository.findIdsBySessionKey(session.getId());
         List<Integer> voteQuestionIds = new ArrayList<>(questionVotes.size());
@@ -75,7 +75,7 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public String submitQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult){
+    public String submitQuestion(UriComponentsBuilder builder, @Valid QuestionForm questionForm, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()) {
 
@@ -90,7 +90,7 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/vote")
-    public String vote(HttpSession session, @RequestParam("question_id") String questionId) {
+    public String vote(UriComponentsBuilder builder, HttpSession session, @RequestParam("question_id") String questionId) {
 
         Integer questionIdInt = Integer.parseInt(questionId);
         QuestionVote questionVote = new QuestionVote();
