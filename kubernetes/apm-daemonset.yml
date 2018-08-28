@@ -24,6 +24,25 @@ data:
       hosts: ['${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}']
       username: ${ELASTIC_USERNAME}
       password: ${ELASTIC_PASSWORD}
+      indices:
+        - index: "apm-%{[beat.version]}-sourcemap"
+          when.contains:
+            processor.event: "sourcemap"
+        - index: "apm-%{[beat.version]}-error-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "error"
+        - index: "apm-%{[beat.version]}-transaction-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "transaction"
+        - index: "apm-%{[beat.version]}-span-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "span"
+        - index: "apm-%{[beat.version]}-metric-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "metric"
+        - index: "apm-%{[beat.version]}-onboarding-%{+yyyy.MM.dd}"
+          when.contains:
+            processor.event: "onboarding"
 
     setup.kibana:
       host: ${KIBANA_HOST}
@@ -49,7 +68,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: apm-server
-        image:  docker.elastic.co/apm/apm-server:6.3.1
+        image:  docker.elastic.co/apm/apm-server:6.4.0
         imagePullPolicy: Always
         args: [
           "-c", "/etc/apm-server.yml",
@@ -122,7 +141,7 @@ spec:
       containers:
       - name: apm-server
         imagePullPolicy: Always
-        image:  docker.elastic.co/apm/apm-server:6.3.1
+        image:  docker.elastic.co/apm/apm-server:6.4.0
         args: [
           "-c", "/etc/apm-server.yml",
           "-e",

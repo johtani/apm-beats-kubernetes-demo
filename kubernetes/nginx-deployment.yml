@@ -5,7 +5,7 @@ metadata:
 spec:
 #  type: NodePort
   type: LoadBalancer
-  loadBalancerIP: 35.200.90.188
+  loadBalancerIP: 35.221.77.69
   # Avoid NAT to get source IP:
   externalTrafficPolicy: Local
   ports:

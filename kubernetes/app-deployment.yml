@@ -27,7 +27,7 @@ spec:
       labels:
         app: app
       annotations:
-        co.elastic.metrics.jolokia/module: jmx
+        co.elastic.metrics.jolokia/module: jolokia
         co.elastic.metrics.jolokia/period: 10s
         co.elastic.metrics.jolokia/hosts: "${data.host}:8080"
     spec:
