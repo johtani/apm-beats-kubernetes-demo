@@ -2,7 +2,6 @@ package info.johtani.apmdemo.controller;
 
 import co.elastic.apm.api.ElasticApm;
 import co.elastic.apm.api.Span;
-import co.elastic.apm.api.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
