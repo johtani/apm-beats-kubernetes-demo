@@ -2,6 +2,7 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 /apm-jar/*
+*.log
 
 ### STS ###
 .apt_generated
